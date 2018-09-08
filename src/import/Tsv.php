@@ -1,24 +1,33 @@
 <?php
     namespace bz0\CSVToDB\Import;
+    use bz0\CSVToDB\Import\fileInterface;
     use Goodby\CSV\Import\Standard\LexerConfig;
     
-    class Tsv{
-        const DELIMITER   = "\t";
-        const ENCLOSURE   = "'";
-        const ESCAPE      = "\\";
-        const FROMCHARSET = 'UTF-8';
-        const TOCHARSET   = 'SJIS-win';
+    class Tsv implements fileInterface{
+        public static $config = [
+            'DELIMITER'   => "\t",
+            'ENCLOSURE'   => '"',
+            'ESCAPE'      => "\\",
+            'FROMCHARSET' => 'UTF-8',
+            'TOCHARSET'   => 'SJIS-win'
+        ];
+
+        const EXT         = 'tsv';
 
         public function config(){
             $config = new LexerConfig();
             $config
-                ->setDelimiter(self::DELIMITER) // Customize delimiter. Default value is comma(,)
-                ->setEnclosure(self::ENCLOSURE)  // Customize enclosure. Default value is double quotation(")
-                ->setEscape(self::ESCAPE)    // Customize escape character. Default value is backslash(\)
-                ->setToCharset(self::FROMCHARSET) // Customize target encoding. Default value is null, no converting.
-                ->setFromCharset(self::TOCHARSET) // Customize CSV file encoding. Default value is null.
+                ->setDelimiter(self::config['DELIMITER'])
+                ->setEnclosure(self::config['ENCLOSURE'])
+                ->setEscape(self::config['ESCAPE'])
+                ->setToCharset(self::config['FROMCHARSET'])
+                ->setFromCharset(self::config['TOCHARSET'])
             ;
 
             return $config;
+        }
+
+        public function accept($ext){
+            return self::EXT === $ext;
         }
     }

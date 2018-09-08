@@ -1,24 +1,33 @@
 <?php
     namespace bz0\CSVToDB\Import;
+    fileInterface;
     use Goodby\CSV\Import\Standard\LexerConfig;
 
-    class Csv{
-        const DELIMITER   = ",";
-        const ENCLOSURE   = '"';
-        const ESCAPE      = "\\";
-        const FROMCHARSET = 'UTF-8';
-        const TOCHARSET   = 'SJIS-win';
+    class Csv implements fileInterface{
+        public static $config = [
+            'DELIMITER'   => ",",
+            'ENCLOSURE'   => '"',
+            'ESCAPE'      => "\\",
+            'FROMCHARSET' => 'UTF-8',
+            'TOCHARSET'   => 'SJIS-win'
+        ];
+
+        const EXT         = 'csv';
 
         public function config(){
             $config = new LexerConfig();
             $config
-                ->setDelimiter(self::DELIMITER) // Customize delimiter. Default value is comma(,)
-                ->setEnclosure(self::ENCLOSURE)  // Customize enclosure. Default value is double quotation(")
-                ->setEscape(self::ESCAPE)    // Customize escape character. Default value is backslash(\)
-                ->setToCharset(self::FROMCHARSET) // Customize target encoding. Default value is null, no converting.
-                ->setFromCharset(self::TOCHARSET) // Customize CSV file encoding. Default value is null.
+                ->setDelimiter(self::config['DELIMITER'])
+                ->setEnclosure(self::config['ENCLOSURE'])
+                ->setEscape(self::config['ESCAPE'])
+                ->setToCharset(self::config['FROMCHARSET'])
+                ->setFromCharset(self::config['TOCHARSET'])
             ;
 
             return $config;
+        }
+
+        public function accept($ext){
+            return self::EXT === $ext;
         }
     }
