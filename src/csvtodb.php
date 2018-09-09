@@ -5,20 +5,24 @@
     use bz0\CSVToDB\Import\Tsv;
 
     class CSVToDB{
-        private $configList = [];
+        private $fileConfigList = [];
         private $execList = [];
 
         public function __construct(){
-            $this->configList[] = new Csv();
-            $this->configList[] = new Tsv();
+            $this->fileConfigList[] = new Csv();
+            $this->fileConfigList[] = new Tsv();
         }
 
-        public function setConfig(fileInterface $config){
-            $this->configList[] = $config;
+        /*
+         * ファイル設定追加
+         */
+        public function setFileConfig(fileInterface $config){
+            $this->fileConfigList[] = $config;
         }
 
-        public function observer($ext){
-            if($config = $this->configSelector($ext)){
+        public function observer($filePath){
+            if($config = $this->fileConfigSelector($ext)){
+
                 $lexer = new Lexer($config);
                 $interpreter = new Interpreter();
 
@@ -29,12 +33,17 @@
                 });
 
                 $lexer->parse('users.csv', $interpreter);
+            }else{
+                throw new Exception('該当するファイル設定がありません');
             }
-
-            throw new Exception();
         }
 
-        public function configSelector($ext){
+        /*
+         * ファイル設定選択
+         * @param string $ext
+         * @return false|$config->config()
+         */
+        public function fileConfigSelector($ext){
             foreach($this->configList as $config){
                 if ($config->accept($ext)){
                     return $config->config();
