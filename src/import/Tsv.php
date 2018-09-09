@@ -28,6 +28,6 @@
         }
 
         public function accept($ext){
-            return self::EXT === $ext;
+            return self::EXT === strtolower($ext);
         }
     }

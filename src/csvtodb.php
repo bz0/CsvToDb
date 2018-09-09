@@ -6,6 +6,7 @@
 
     class CSVToDB{
         private $configList = [];
+        private $execList = [];
 
         public function __construct(){
             $this->configList[] = new Csv();
@@ -16,19 +17,21 @@
             $this->configList[] = $config;
         }
 
-        public function observer($ext, $execList){
+        public function observer($ext){
             if($config = $this->configSelector($ext)){
                 $lexer = new Lexer($config);
                 $interpreter = new Interpreter();
 
                 $interpreter->addObserver(function(array $columns) use ($execList) {
-                    //データに処理を入れるときはこのあたりに
-                    foreach($execList as $exec){
+                    foreach($this->execList as $exec){
                         $exec->exec($columns);
                     }
                 });
+
+                $lexer->parse('users.csv', $interpreter);
             }
 
+            throw new Exception();
         }
 
         public function configSelector($ext){
