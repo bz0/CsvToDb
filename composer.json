@@ -1,14 +1,16 @@
 {
     "require": {
         "goodby/csv": "*",
-        "yuyat/bulky": "*"
+        "yuyat/bulky": "*",
+        "guiguiboy/php-cli-progress-bar": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "*",
+        "phpunit/dbunit": "^4.0"
     },
     "autoload": {
         "psr-4": {
             "bz0\\CSVToDB\\": "src/"
         }
-    },
+    }
 }

@@ -51,8 +51,8 @@
                 if($config = $this->fileConfigSelector($finfo['extension'])){
                     $lexer = new Lexer($config);
                     $interpreter = new Interpreter();
-    
-                    $interpreter->addObserver(function(array $columns) {
+
+                    $interpreter->addObserver(function(array $columns){
                         foreach($this->execList as $exec){
                             $exec->execute($columns);
                         }
