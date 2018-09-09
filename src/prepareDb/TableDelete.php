@@ -12,13 +12,10 @@
         public function execute(){
             try{
                 $this->pdo->beginTransaction();
-                $sql  = "DELETE FROM :table";
+                $sql  = "DELETE FROM " . $this->table;
                 $stmt = $this->pdo->prepare($sql);
-                $params = array(
-                    ':table' => $this->table
-                );
 
-                $res = $stmt->execute($params);
+                $res = $stmt->execute();
                 $this->pdo->commit();
 
                 return $res;

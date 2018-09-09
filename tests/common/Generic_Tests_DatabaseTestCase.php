@@ -7,7 +7,7 @@ abstract class Generic_Tests_DatabaseTestCase extends TestCase
     use TestCaseTrait;
 
     // only instantiate pdo once for test clean-up/fixture load
-    static private $pdo = null;
+    static protected $pdo = null;
 
     // only instantiate PHPUnit_Extensions_Database_DB_IDatabaseConnection once per test
     private $conn = null;
