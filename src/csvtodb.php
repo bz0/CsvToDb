@@ -54,7 +54,7 @@
     
                     $interpreter->addObserver(function(array $columns) {
                         foreach($this->execList as $exec){
-                            $exec->exec($columns);
+                            $exec->execute($columns);
                         }
                     });
     
