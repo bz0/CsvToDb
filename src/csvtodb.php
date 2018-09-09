@@ -20,21 +20,22 @@
             $this->fileConfigList[] = $config;
         }
 
-        public function observer($filePath){
-            if($config = $this->fileConfigSelector($ext)){
-
-                $lexer = new Lexer($config);
-                $interpreter = new Interpreter();
-
-                $interpreter->addObserver(function(array $columns) use ($execList) {
-                    foreach($this->execList as $exec){
-                        $exec->exec($columns);
-                    }
-                });
-
-                $lexer->parse('users.csv', $interpreter);
-            }else{
-                throw new Exception('該当するファイル設定がありません');
+        public function execute($filePathList){
+            foreach($filePathList as $filePath){
+                if($config = $this->fileConfigSelector($ext)){
+                    $lexer = new Lexer($config);
+                    $interpreter = new Interpreter();
+    
+                    $interpreter->addObserver(function(array $columns) use ($execList) {
+                        foreach($this->execList as $exec){
+                            $exec->exec($columns);
+                        }
+                    });
+    
+                    $lexer->parse('users.csv', $interpreter);
+                }else{
+                    throw new Exception('該当するファイル設定がありません');
+                }
             }
         }
 
