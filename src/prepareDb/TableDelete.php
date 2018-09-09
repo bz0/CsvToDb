@@ -10,14 +10,19 @@
 
         public function execute(){
             try{
+                $this->pdo->beginTransaction();
                 $sql  = "DELETE FROM :table";
                 $stmt = $this->pdo->prepare($sql);
                 $params = array(
                     ':table' => $this->table
                 );
 
-                return $stmt->execute($params);
+                $res = $stmt->execute($params);
+                $this->pdo->commit();
+
+                return $res;
             }catch(PDOException $e){
+                $this->pdo->rollback();
                 return $e->getMessage();
             }
         }

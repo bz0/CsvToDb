@@ -1,5 +1,6 @@
 {
     "require": {
-        "goodby/csv": "*"
+        "goodby/csv": "*",
+        "yuyat/bulky": "*"
     }
 }

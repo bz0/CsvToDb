@@ -10,26 +10,34 @@
 
         public function execute($copyTable){
             try{
-                //構造コピー
-                $sql = "CREATE TABLE :copyTable LIKE :baseTable";
                 $params = array(
                     ':basetable' => $this->table,
                     ':copytable' => $copyTable
                 );
 
-                $stmt = $this->pdo->prepare($sql);
-                $res  = $stmt->execute($params);
-
-                //データコピー
+                $this->pdo->beginTransaction();
+                $this->copy($params);
                 if ($res){
-                    $sql  = "INSERT INTO :copyTable SELECT * FROM :baseTable";
-                    $stmt = $this->pdo->prepare($sql);
-                    $res  = $stmt->execute($params);
+                    $this->insert($params);
                 }
+                $this->pdo->commit();
 
                 return $res;
             }catch(PDOException $e){
+                $this->pdo->rollback();
                 return $e->getMessage();
             }
+        }
+
+        private function copy($params){
+            $sql = "CREATE TABLE :copyTable LIKE :baseTable";
+            $stmt = $this->pdo->prepare($sql);
+            return $stmt->execute($params);
+        }
+
+        private function insert($params){
+            $sql  = "INSERT INTO :copyTable SELECT * FROM :baseTable";
+            $stmt = $this->pdo->prepare($sql);
+            $res  = $stmt->execute($params);
         }
     }
