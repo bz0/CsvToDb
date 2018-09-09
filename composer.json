@@ -2,5 +2,13 @@
     "require": {
         "goodby/csv": "*",
         "yuyat/bulky": "*"
-    }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "bz0\\CSVToDB\\": "src/"
+        }
+    },
 }

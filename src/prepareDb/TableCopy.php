@@ -1,4 +1,5 @@
 <?php
+    namespace bz0\CSVToDB\prepareDb;
     class TableCopy implements InterfacePrepareDb{
         private $pdo;
         private $table;

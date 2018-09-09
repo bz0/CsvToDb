@@ -1,4 +1,5 @@
 <?php
+    namespace bz0\CSVToDB\File;
     class BUlkInsert implements ImportInterface{
         private $queueFactory;
         const MAXROW = 1000;
