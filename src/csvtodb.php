@@ -36,6 +36,10 @@
             }
         }
 
+        /*
+         * 実行
+         * @param array $filePathList
+         */
         public function execute($filePathList){
             $message = $this->prepareDb();
             if ($message!==""){
