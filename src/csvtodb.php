@@ -13,7 +13,9 @@
          * @param $prepareDbList
          * @param $columnExecList
          */
-        public function __construct($prepareDbList, $columnExecList){
+        public function __construct(PrepareDbInterface $prepareDbList, 
+                                    ColumnInterface $columnExecList, 
+                                    $logger){
             $this->fileConfigList[] = new Csv();
             $this->fileConfigList[] = new Tsv();
             $this->prepareDbList    = $prepareDbList;

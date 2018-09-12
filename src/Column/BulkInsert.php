@@ -1,6 +1,6 @@
 <?php
     namespace bz0\CSVToDB\Column;
-    class BUlkInsert implements ImportInterface{
+    class BUlkInsert implements ColumnInterface{
         private $queueFactory;
         const MAXROW = 1000;
         private $table;

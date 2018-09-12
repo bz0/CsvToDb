@@ -1,6 +1,6 @@
 <?php
     namespace bz0\CSVToDB\prepareDb;
-    class TableDelete implements InterfacePrepareDb{
+    class TableDelete implements PrepareDbInterface{
         private $pdo;
         private $table;
 
