@@ -1,5 +1,5 @@
 <?php
-    namespace bz0\CSVToDB\File;
+    namespace bz0\CSVToDB\Column;
     class BUlkInsert implements ImportInterface{
         private $queueFactory;
         const MAXROW = 1000;
@@ -22,11 +22,11 @@
             );
 
             $this->queue->on('error', function ($records) {
-                echo "Error!", PHP_EOL;
+                return "Error!";
             });
         }
 
-        public function execute($column){
-            $this->queue->insert($column);
+        public function execute($row){
+            $this->queue->insert($row);
         }
     }

@@ -6,13 +6,18 @@
 
     class CSVToDB{
         private $fileConfigList = [];
-        private $execList = [];
-        private $prepareDbList = [];
+        private $prepareDbList  = [];
+        private $columnExecList = [];
 
-        public function __construct($prepareDbList){
+        /*
+         * @param $prepareDbList
+         * @param $columnExecList
+         */
+        public function __construct($prepareDbList, $columnExecList){
             $this->fileConfigList[] = new Csv();
             $this->fileConfigList[] = new Tsv();
             $this->prepareDbList    = $prepareDbList;
+            $this->columnExecList   = $columnExecList;
         }
 
         /*

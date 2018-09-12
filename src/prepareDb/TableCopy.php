@@ -31,7 +31,7 @@
         }
 
         private function copy($params){
-            $sql = "CREATE TABLE :copyTable LIKE :baseTable";
+            $sql = "CREATE TABLE " . $this->table . " LIKE :baseTable";
             $stmt = $this->pdo->prepare($sql);
             return $stmt->execute($params);
         }
