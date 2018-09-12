@@ -1,8 +1,10 @@
 <?php
     //import
     namespace bz0\CSVToDB;
-    use bz0\CSVToDB\Import\Csv;
-    use bz0\CSVToDB\Import\Tsv;
+    use bz0\CSVToDB\File\Csv;
+    use bz0\CSVToDB\File\Tsv;
+    use bz0\CSVToDB\prepareDb\PrepareDbInterface;
+    use bz0\CSVToDB\Column\ColumnInterface;
 
     class CSVToDB{
         private $fileConfigList = [];
