@@ -9,12 +9,12 @@
             $this->table = $table;
         }
 
-        public function execute($copyTable){
+        public function execute($params){
             try{
                 $this->pdo->beginTransaction();
-                $this->copy($copyTable);
+                $this->copy($params);
                 if ($res){
-                    $this->insert($copyTable);
+                    $this->insert($params);
                 }
                 $this->pdo->commit();
 
@@ -37,5 +37,9 @@
                   . " SELECT * FROM " . $this->pdo->quote($this->table);
             $stmt = $this->pdo->prepare($sql);
             $res  = $stmt->execute($params);
+        }
+
+        public function accept($class){
+            return strtolower(get_class($this)) === $class;
         }
     }

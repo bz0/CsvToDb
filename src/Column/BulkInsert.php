@@ -29,4 +29,8 @@
         public function execute($row){
             $this->queue->insert($row);
         }
+
+        public function accept($class){
+            return strtolower(get_class($this)) === $class;
+        }
     }

@@ -14,12 +14,15 @@
          * @param $prepareDbList
          * @param $columnExecList
          */
-        public function __construct(PrepareDbInterface $prepareDbList, 
-                                    ColumnInterface    $columnExecList, 
+        public function __construct($pdo,
+                                    $table,
                                     $logger){
             $this->fileConfigList[] = new Csv();
             $this->fileConfigList[] = new Tsv();
-            $this->prepareDbList    = $prepareDbList;
+
+            $this->prepareDbList[]  = new TableCopy($pdo, $table);
+            $this->prepareDbList[]  = new TableDelete($pdo, $table);
+            
             $this->columnExecList   = $columnExecList;
             $this->logger           = $logger;
         }
@@ -35,9 +38,11 @@
         /*
          * DB前処理
          */
-        public function prepareDb(){
+        public function prepareDb($command){
             foreach($this->prepareDbList as $prepareDb){
-                $prepareDb->execute();
+                if ($prepareDb->accept($command)){
+                    $prepareDb->execute();
+                }
             }
         }
 
@@ -45,10 +50,12 @@
          * 実行
          * @param array $filePathList
          */
-        public function execute($filePathList){
+        public function execute($filePathList, $commands=[]){
             try{
-                $this->prepareDb();
-
+                foreach($commands as $command){
+                    $this->prepareDb();
+                }
+                
                 foreach($filePathList as $filePath){
                     $finfo = pathinfo($filePath);
                     $this->logger->addInfo("ext:" . $finfo['extension'] . " path:" . $filePath);

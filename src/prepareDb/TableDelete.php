@@ -9,7 +9,7 @@
             $this->table = $table;
         }
 
-        public function execute(){
+        public function execute($params=''){
             try{
                 $this->pdo->beginTransaction();
                 $sql  = "DELETE FROM " . $this->table;
@@ -23,5 +23,9 @@
                 $this->pdo->rollback();
                 return $e->getMessage();
             }
+        }
+
+        public function accept($class){
+            return strtolower(get_class($this)) === $class;
         }
     }
