@@ -35,12 +35,8 @@
          * DB前処理
          */
         public function prepareDb(){
-            try{
-                foreach($this->prepareDbList as $prepareDb){
-                    $prepareDb->execute();
-                }
-            }catch(Exception $e){
-                $this->logger->addError($e->getMessage());
+            foreach($this->prepareDbList as $prepareDb){
+                $prepareDb->execute();
             }
         }
 
@@ -49,22 +45,27 @@
          * @param array $filePathList
          */
         public function execute($filePathList){
-            $this->prepareDb();
+            try{
+                $this->prepareDb();
 
-            foreach($filePathList as $filePath){
-                $finfo = pathinfo($filePath);
-                if($config = $this->fileConfigSelector($finfo['extension'])){
-                    $lexer = new Lexer($config);
-                    $interpreter = new Interpreter();
-
-                    $interpreter->addObserver(function(array $columns){
-                        foreach($this->columnExecList as $columnExec){
-                            $columnExec->execute($columns);
-                        }
-                    });
+                foreach($filePathList as $filePath){
+                    $finfo = pathinfo($filePath);
+                    $this->logger->addInfo("file:" . $filePath);
+                    if($config = $this->fileConfigSelector($finfo['extension'])){
+                        $lexer = new Lexer($config);
+                        $interpreter = new Interpreter();
     
-                    $lexer->parse($filePath, $interpreter);
+                        $interpreter->addObserver(function(array $columns){
+                            foreach($this->columnExecList as $columnExec){
+                                $columnExec->execute($columns);
+                            }
+                        });
+        
+                        $lexer->parse($filePath, $interpreter);
+                    }
                 }
+            }catch(Exception $e){
+                $this->logger->addError($e->getMessage());
             }
         }
 
@@ -81,7 +82,6 @@
             }
 
             $message = '該当するファイル設定がありません';
-            $this->logger->addError($message);
             throw new Exception($message);
         }
     }
