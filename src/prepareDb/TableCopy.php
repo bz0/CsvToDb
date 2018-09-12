@@ -11,15 +11,10 @@
 
         public function execute($copyTable){
             try{
-                $params = array(
-                    ':basetable' => $this->table,
-                    ':copytable' => $copyTable
-                );
-
                 $this->pdo->beginTransaction();
-                $this->copy($params);
+                $this->copy($copyTable);
                 if ($res){
-                    $this->insert($params);
+                    $this->insert($copyTable);
                 }
                 $this->pdo->commit();
 
@@ -30,14 +25,16 @@
             }
         }
 
-        private function copy($params){
-            $sql = "CREATE TABLE " . $this->table . " LIKE :baseTable";
+        private function copy($copyTable){
+            $sql = "CREATE TABLE " . $this->pdo->quote($copyTable) 
+                 . " LIKE " . $this->pdo->quote($this->table);
             $stmt = $this->pdo->prepare($sql);
             return $stmt->execute($params);
         }
 
-        private function insert($params){
-            $sql  = "INSERT INTO :copyTable SELECT * FROM :baseTable";
+        private function insert($copyTable){
+            $sql  = "INSERT INTO " . $this->pdo->quote($copyTable)
+                  . " SELECT * FROM " . $this->pdo->quote($this->table);
             $stmt = $this->pdo->prepare($sql);
             $res  = $stmt->execute($params);
         }
