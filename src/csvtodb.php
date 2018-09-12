@@ -1,5 +1,4 @@
 <?php
-    //import
     namespace bz0\CSVToDB;
     use bz0\CSVToDB\File\Csv;
     use bz0\CSVToDB\File\Tsv;
@@ -52,7 +51,7 @@
 
                 foreach($filePathList as $filePath){
                     $finfo = pathinfo($filePath);
-                    $this->logger->addInfo("file:" . $filePath);
+                    $this->logger->addInfo("ext:" . $finfo['extension'] . " path:" . $filePath);
                     if($config = $this->fileConfigSelector($finfo['extension'])){
                         $lexer = new Lexer($config);
                         $interpreter = new Interpreter();
