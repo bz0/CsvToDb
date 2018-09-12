@@ -14,12 +14,13 @@
          * @param $columnExecList
          */
         public function __construct(PrepareDbInterface $prepareDbList, 
-                                    ColumnInterface $columnExecList, 
+                                    ColumnInterface    $columnExecList, 
                                     $logger){
             $this->fileConfigList[] = new Csv();
             $this->fileConfigList[] = new Tsv();
             $this->prepareDbList    = $prepareDbList;
             $this->columnExecList   = $columnExecList;
+            $this->logger           = $logger;
         }
 
         /*
@@ -39,7 +40,7 @@
                     $prepareDb->execute();
                 }
             }catch(Exception $e){
-                return $e->getMessage();
+                $this->logger->addError($e->getMessage());
             }
         }
 
@@ -48,10 +49,7 @@
          * @param array $filePathList
          */
         public function execute($filePathList){
-            $message = $this->prepareDb();
-            if ($message!==""){
-                return $message;
-            }
+            $this->prepareDb();
 
             foreach($filePathList as $filePath){
                 $finfo = pathinfo($filePath);
@@ -60,14 +58,12 @@
                     $interpreter = new Interpreter();
 
                     $interpreter->addObserver(function(array $columns){
-                        foreach($this->execList as $exec){
-                            $exec->execute($columns);
+                        foreach($this->columnExecList as $columnExec){
+                            $columnExec->execute($columns);
                         }
                     });
     
                     $lexer->parse($filePath, $interpreter);
-                }else{
-                    throw new Exception('該当するファイル設定がありません');
                 }
             }
         }
@@ -78,12 +74,14 @@
          * @return false|$config->config()
          */
         public function fileConfigSelector($ext){
-            foreach($this->configList as $config){
-                if ($config->accept($ext)){
-                    return $config->config();
+            foreach($this->fileConfigList as $fileConfig){
+                if ($fileConfig->accept($ext)){
+                    return $fileConfig->config();
                 }
             }
 
-            return false;
+            $message = '該当するファイル設定がありません';
+            $this->logger->addError($message);
+            throw new Exception($message);
         }
     }
