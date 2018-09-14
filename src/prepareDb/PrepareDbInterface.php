@@ -1,6 +1,5 @@
 <?php
-namespace bz0\CSVToDB\prepareDb;
+namespace bz0\CSVToDB\PrepareDb;
 interface PrepareDbInterface{
-    public function execute($params);
-    public function accept($class);
+    public function execute();
 }

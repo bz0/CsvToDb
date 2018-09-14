@@ -1,5 +1,5 @@
 <?php
-    namespace bz0\CSVToDB\prepareDb;
+    namespace bz0\CSVToDB\PrepareDb;
     class TableDelete implements PrepareDbInterface{
         private $pdo;
         private $table;
@@ -9,23 +9,16 @@
             $this->table = $table;
         }
 
-        public function execute($params=''){
+        public function execute(){
             try{
                 $this->pdo->beginTransaction();
                 $sql  = "DELETE FROM " . $this->table;
                 $stmt = $this->pdo->prepare($sql);
-
-                $res = $stmt->execute();
+                $stmt->execute();
                 $this->pdo->commit();
-
-                return $res;
             }catch(PDOException $e){
                 $this->pdo->rollback();
                 return $e->getMessage();
             }
-        }
-
-        public function accept($class){
-            return strtolower(get_class($this)) === $class;
         }
     }

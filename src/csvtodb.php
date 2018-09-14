@@ -6,55 +6,24 @@
     use bz0\CSVToDB\Column\ColumnInterface;
 
     class CSVToDB{
-        private $fileConfigList = [];
-        private $prepareDbList  = [];
-        private $columnExecList = [];
+        private $config;
+        private $logger;
 
-        /*
-         * @param $prepareDbList
-         * @param $columnExecList
-         */
-        public function __construct($pdo,
-                                    $table,
-                                    $logger){
-            $this->fileConfigList[] = new Csv();
-            $this->fileConfigList[] = new Tsv();
-
-            $this->prepareDbList[]  = new TableCopy($pdo, $table);
-            $this->prepareDbList[]  = new TableDelete($pdo, $table);
-            
-            $this->columnExecList   = $columnExecList;
-            $this->logger           = $logger;
+        public function __construct($config, $logger){
+            $this->config = $config;
+            $this->logger = $logger;
         }
 
-        /*
-         * ファイル設定追加
-         * @param fileInterface $config
-         */
-        public function setFileConfig(fileInterface $config){
-            $this->fileConfigList[] = $config;
-        }
-
-        /*
-         * DB前処理
-         */
-        public function prepareDb($command){
-            foreach($this->prepareDbList as $prepareDb){
-                if ($prepareDb->accept($command)){
-                    $prepareDb->execute();
-                }
+        public function prepareDb(){
+            $prepareDbList = $this->config->getPrepareDb();
+            foreach($prepareDbList as $prepareDb){
+                $prepareDb->execute();
             }
         }
 
-        /*
-         * 実行
-         * @param array $filePathList
-         */
-        public function execute($filePathList, $commands=[]){
+        public function execute($filePathList){
             try{
-                foreach($commands as $command){
-                    $this->prepareDb();
-                }
+                $this->prepareDb();
                 
                 foreach($filePathList as $filePath){
                     $finfo = pathinfo($filePath);

@@ -1,6 +1,6 @@
 <?php
     namespace bz0\CSVToDB\File;
-    interface fileInterface{
+    interface FileInterface{
         public function config();
         public function accept($ext);
     }

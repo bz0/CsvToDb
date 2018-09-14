@@ -1,45 +1,38 @@
 <?php
-    namespace bz0\CSVToDB\prepareDb;
+    namespace bz0\CSVToDB\PrepareDb;
     class TableCopy implements PrepareDbInterface{
         private $pdo;
         private $table;
+        private $copyTable;
 
-        public function __construct($pdo, $table){
+        public function __construct($pdo, $table, $copyTable){
             $this->pdo = $pdo;
             $this->table = $table;
         }
 
-        public function execute($params){
+        public function execute(){
             try{
                 $this->pdo->beginTransaction();
-                $this->copy($params);
-                if ($res){
-                    $this->insert($params);
-                }
+                $this->copy();
+                $this->insert();
                 $this->pdo->commit();
-
-                return $res;
             }catch(PDOException $e){
                 $this->pdo->rollback();
                 return $e->getMessage();
             }
         }
 
-        private function copy($copyTable){
-            $sql = "CREATE TABLE " . $this->pdo->quote($copyTable) 
+        private function copy(){
+            $sql = "CREATE TABLE " . $this->pdo->quote($this->copyTable) 
                  . " LIKE " . $this->pdo->quote($this->table);
             $stmt = $this->pdo->prepare($sql);
             return $stmt->execute($params);
         }
 
-        private function insert($copyTable){
-            $sql  = "INSERT INTO " . $this->pdo->quote($copyTable)
+        private function insert(){
+            $sql  = "INSERT INTO " . $this->pdo->quote($this->copyTable)
                   . " SELECT * FROM " . $this->pdo->quote($this->table);
             $stmt = $this->pdo->prepare($sql);
             $res  = $stmt->execute($params);
-        }
-
-        public function accept($class){
-            return strtolower(get_class($this)) === $class;
         }
     }

@@ -7,11 +7,17 @@
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //エラー発生時に例外を投げる
 
     use bz0\CSVToDB\CSVToDB;
+    use bz0\CSVToDB\CSVToDB\Config;
     use bz0\CSVToDB\prepareDb\TableCopy;
 
-    $table = 'test';
-    $prepareDbList[] = new TableCopy($pdo, $table);
+    $config = new Config();
+    $config->setFileConfig(new Csv());
+    $config->setFileConfig(new Tsv());
 
+    $table = "test";
+    $copyTable = "test_" . date("YmdHis");
+    $config->setPrepareDb(new TableCopy($pdo, $table, $copyTable));
+    
 
     $csvtodb = new CSVToDB();
 
