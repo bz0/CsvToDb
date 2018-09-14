@@ -16,8 +16,7 @@
 
     $table = "test";
     $copyTable = "test_" . date("YmdHis");
-    $config->setPrepareDb(new TableCopy($pdo, $table, $copyTable));
-    
+    $config->setPrepareDb(new TableCopy($pdo, $table, $copyTable));    
 
     $csvtodb = new CSVToDB();
-
+    $csvtodb->execute($filePathList);

@@ -52,7 +52,8 @@
          * @return false|$config->config()
          */
         public function fileConfigSelector($ext){
-            foreach($this->fileConfigList as $fileConfig){
+            $fileConfigs = $this->config->getFileConfig();
+            foreach($fileConfigs as $fileConfig){
                 if ($fileConfig->accept($ext)){
                     return $fileConfig->config();
                 }
