@@ -34,6 +34,19 @@ CSV等のファイルをテーブルにインサート（登録）すること�
 
 ### 準備
 
+#### DBConfig.phpを設定
+
+DB情報を設定して下さい。
+
+```
+define('HOST', '');
+define('DBNAME', '');
+define('CHARSET', '');
+define('DSN', 'mysql:dbname=' . DBNAME . ';host=' . HOST . ';charset=' . CHARSET);
+define('USER', '');
+define('PASSWORD', '');
+```
+
 #### PDO
 
 ```
