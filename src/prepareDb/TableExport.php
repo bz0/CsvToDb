@@ -1,6 +1,6 @@
 <?php
     namespace bz0\CSVToDB\PrepareDb;
-    class TableDelete implements PrepareDbInterface{
+    class TableExport implements PrepareDbInterface{
         private $pdo;
         private $table;
 
@@ -9,10 +9,10 @@
             $this->table = $table;
         }
 
-        public function execute(){
+        public function execute($bkupPath){
             try{
                 $this->pdo->beginTransaction();
-                $sql  = "DELETE FROM `" . $this->table . "`";
+                $sql  = "mysqldump -u " . USER . " -p" . PASSWORD . " -h " . HOST . " " . DBNAME . " " . $this->table . " > " . $bkupPath;
                 $this->pdo->query($sql);
                 $this->pdo->commit();
             }catch(PDOException $e){
