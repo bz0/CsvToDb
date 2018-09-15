@@ -1,7 +1,7 @@
 <?php
     ini_set("display_errors", 1);
     error_reporting(-1);
-    
+
     require_once(dirname(__FILE__) . '/../vendor/autoload.php');
     require_once(dirname(__FILE__) . '/../DBConfig.php');
     
@@ -34,11 +34,18 @@
     //-------------------------------
     //注意：DBの事前処理で使用するテーブル名等は、決してユーザ側で自由に指定させないようにして下さい
     //SQLインジェクションが起きる可能性があります
-    $table     = "test1111";
+    $table     = "test";
     $copyTable = "test_" . date("YmdHis");
     $bkupPath  = dirname(__FILE__) . "/bkup.sql";
-    //$config->setPrepareDb(new CSVToDB\prepareDb\TableCopy($pdo, $table, $copyTable));
-    $config->setPrepareDb(new CSVToDB\prepareDb\TableExport($pdo, $table, $bkupPath));
+    $config->setPrepareProcess(new CSVToDB\Process\TableCopy($pdo, $table, $copyTable));
+    $config->setPrepareProcess(new CSVToDB\Process\TableExport($pdo, $table, $bkupPath));
+
+    //-------------------------------
+    //ファイルを読み込んだ後の後処理
+    //-------------------------------
+    $table     = "test";
+    $copyTable = "run_" . date("YmdHis");
+    $config->setPostProcess(new CSVToDB\Process\TableCopy($pdo, $table, $copyTable));
 
     //-------------------------------
     //ファイルを１行ずつ読み込んだときに行う処理
@@ -50,6 +57,7 @@
         'yubin',
         'tel'
     ];
+
     //ヘッダ有無
     $isHeader = true;
 

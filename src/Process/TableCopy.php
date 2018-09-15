@@ -1,6 +1,6 @@
 <?php
-    namespace bz0\CSVToDB\PrepareDb;
-    class TableCopy implements PrepareDbInterface{
+    namespace bz0\CSVToDB\Process;
+    class TableCopy implements ProcessInterface{
         private $pdo;
         private $table;
         private $copyTable;

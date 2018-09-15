@@ -1,6 +1,6 @@
 <?php
-    namespace bz0\CSVToDB\PrepareDb;
-    class TableExport implements PrepareDbInterface{
+    namespace bz0\CSVToDB\Process;
+    class TableExport implements ProcessInterface{
         private $pdo;
         private $table;
         private $bkupPath;

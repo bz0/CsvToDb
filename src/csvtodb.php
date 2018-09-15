@@ -18,9 +18,15 @@
             $this->logger = $logger;
         }
 
-        public function prepareDb(){
-            foreach($this->config->getPrepareDb() as $prepareDb){
-                $prepareDb->execute();
+        public function prepareProcess(){
+            foreach($this->config->getPrepareProcess() as $prepare){
+                $prepare->execute();
+            }
+        }
+
+        public function postProcess(){
+            foreach($this->config->getPostProcess() as $postProcess){
+                $postProcess->execute();
             }
         }
 
@@ -34,7 +40,7 @@
 
         public function execute($filePathList){
             try{
-                $this->prepareDb();
+                $this->prepareProcess();
                 
                 foreach($filePathList as $filePath){
                     $finfo = pathinfo($filePath);
@@ -53,6 +59,8 @@
                         $this->initFileRowCount();
                     }
                 }
+
+                $this->postProcess();
             }catch(\Exception $e){
                 $this->logger->error($e->getMessage());
             }

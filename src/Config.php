@@ -1,14 +1,14 @@
 <?php
     namespace bz0\CSVToDB;
     use bz0\CSVToDB\File\FileInterface;
-    use bz0\CSVToDB\PrepareDb\PrepareDbInterface;
+    use bz0\CSVToDB\Process\ProcessInterface;
     use bz0\CSVToDB\PostProcess\PostProcessInterface;
     use bz0\CSVToDB\Column\ColumnExecuteInterface;
 
     class Config{
         private $fileConfig;
-        private $prepareDb;
-        private $postProcessing;
+        private $prepareProcess;
+        private $postProcess;
         private $columnExecute;
 
         public function setFileConfig(FileInterface $fileConfig){
@@ -19,20 +19,20 @@
             return $this->fileConfig;
         }
 
-        public function setPrepareDb(PrepareDbInterface $prepareDb){
-            $this->prepareDb[] = $prepareDb;
+        public function setPrepareProcess(ProcessInterface $process){
+            $this->prepareProcess[] = $process;
         }
 
-        public function getPrepareDb(){
-            return $this->prepareDb;
+        public function getPrepareProcess(){
+            return $this->prepareProcess;
         }
 
-        public function setPostProcessing(PostProcessInterface $postProcessing){
-            $this->postProcessing[] = $postProcessing;
+        public function setPostProcess(ProcessInterface $process){
+            $this->postProcess[] = $process;
         }
 
-        public function getPostProcessing(){
-            return $this->postProcessing;
+        public function getPostProcess(){
+            return $this->postProcess;
         }
 
         public function setColumnExecute(ColumnExecuteInterface $columnExecute){
