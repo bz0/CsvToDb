@@ -9,13 +9,15 @@
     use bz0\CSVToDB as CSVToDB;
 
     $config = new CSVToDB\Config();
-    //読み込むファイル形式を指定
+    //読み込むファイル形式を指定（拡張子で形式判別するので違ってると受け付けません）
     $config->setFileConfig(new CSVToDB\File\Csv());
     $config->setFileConfig(new CSVToDB\File\Tsv());
+
     //ファイルを読み込む前の事前処理
     $table = "test";
     $copyTable = "test_" . date("YmdHis");
-    $config->setPrepareDb(new CSVToDB\prepareDb\TableCopy($pdo, $table, $copyTable));    
+    $config->setPrepareDb(new CSVToDB\prepareDb\TableCopy($pdo, $table, $copyTable));
+       
     //ファイルを１行ずつ読み込んだときに行う処理
     $config->setColumnExecute(new CSVToDB\Column\BulkInsert($pdo, $table));
 
