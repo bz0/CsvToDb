@@ -39,6 +39,7 @@
     $bkupPath  = dirname(__FILE__) . "/bkup.sql";
     $config->setPrepareProcess(new CSVToDB\Process\TableCopy($pdo, $table, $copyTable));
     $config->setPrepareProcess(new CSVToDB\Process\TableExport($pdo, $table, $bkupPath));
+    $config->setPrepareProcess(new CSVToDB\Process\ChatworkMessageSend("", 1613708, "Hello world!!"));
 
     //-------------------------------
     //ファイルを読み込んだ後の後処理

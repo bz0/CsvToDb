@@ -18,7 +18,7 @@
             exec($command, $out, $status);
 
             if ($status!=0){
-                throw new \Exception("TableExport: バックアップに失敗しました");
+                throw new \Exception(get_class($this) . ": バックアップに失敗しました");
             }
         }
     }
