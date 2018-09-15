@@ -15,8 +15,7 @@
         }
 
         public function prepareDb(){
-            $prepareDbList = $this->config->getPrepareDb();
-            foreach($prepareDbList as $prepareDb){
+            foreach($this->config->getPrepareDb() as $prepareDb){
                 $prepareDb->execute();
             }
         }
@@ -27,7 +26,7 @@
                 
                 foreach($filePathList as $filePath){
                     $finfo = pathinfo($filePath);
-                    $this->logger->addInfo("ext:" . $finfo['extension'] . " path:" . $filePath);
+                    $this->logger->info("ext:" . $finfo['extension'] . " path:" . $filePath);
                     if($config = $this->fileConfigSelector($finfo['extension'])){
                         $lexer = new Lexer($config);
                         $interpreter = new Interpreter();
@@ -42,7 +41,7 @@
                     }
                 }
             }catch(Exception $e){
-                $this->logger->addError($e->getMessage());
+                $this->logger->error($e->getMessage());
             }
         }
 

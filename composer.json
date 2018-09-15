@@ -2,7 +2,7 @@
     "require": {
         "goodby/csv": "*",
         "yuyat/bulky": "*",
-        "guiguiboy/php-cli-progress-bar": "*"
+        "monolog/monolog": "^1.23"
     },
     "require-dev": {
         "phpunit/phpunit": "*",
