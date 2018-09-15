@@ -31,9 +31,11 @@
     //-------------------------------
     //注意：DBの事前処理で使用するテーブル名等は、決してユーザ側で自由に指定させないようにして下さい
     //SQLインジェクションが起きる可能性があります
-    $table = "test";
+    $table     = "test";
     $copyTable = "test_" . date("YmdHis");
+    $bkupPath  = dirname(__FILE__) . "/bkup.sql";
     $config->setPrepareDb(new CSVToDB\prepareDb\TableCopy($pdo, $table, $copyTable));
+    $config->setPrepareDb(new CSVToDB\prepareDb\TableExport($pdo, $table, $bkupPath));
 
     //-------------------------------
     //ファイルを１行ずつ読み込んだときに行う処理

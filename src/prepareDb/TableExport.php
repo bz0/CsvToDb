@@ -3,20 +3,20 @@
     class TableExport implements PrepareDbInterface{
         private $pdo;
         private $table;
+        private $bkupPath;
 
-        public function __construct($pdo, $table){
-            $this->pdo = $pdo;
-            $this->table = $table;
+        public function __construct($pdo, $table, $bkupPath){
+            $this->pdo      = $pdo;
+            $this->table    = $table;
+            $this->bkupPath = $bkupPath;
         }
 
-        public function execute($bkupPath){
-            try{
-                $this->pdo->beginTransaction();
-                $sql  = "mysqldump -u " . USER . " -p" . PASSWORD . " -h " . HOST . " " . DBNAME . " " . $this->table . " > " . $bkupPath;
-                $this->pdo->query($sql);
-                $this->pdo->commit();
-            }catch(PDOException $e){
-                $this->pdo->rollback();
-            }
+        public function execute(){
+            $command = "MYSQL_PWD='" . PASSWORD . "' mysqldump -u "
+                  . USER . " -h " . HOST . " " . DBNAME . " " 
+                  . $this->table . " > " . $this->bkupPath;
+            exec($command, $out, $ret);
+            var_dump($out);
+            var_dump($ret);
         }
     }
