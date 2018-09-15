@@ -87,7 +87,9 @@ $config->setPrepareProcess(new CSVToDB\Process\TableCopy($pdo, "バックアッ�
 - バックアップ元のテーブル名
 - バックアップ先のファイルパス
 
+```
 $config->setPrepareProcess(new CSVToDB\Process\TableExport($pdo, "バックアップ元のテーブル名", "バックアップ先のファイルパス"));
+```
 
 #### チャットワークへの通知
 
@@ -97,4 +99,6 @@ $config->setPrepareProcess(new CSVToDB\Process\TableExport($pdo, "バックア�
 - 通知する部屋番号
 - 通知するメッセージ
 
+```
 $config->setPrepareProcess(new CSVToDB\Process\ChatworkMessageSend("トークン", "通知する部屋番号", "通知するメッセージ"));
+```
