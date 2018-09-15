@@ -28,6 +28,10 @@
             $this->config->getColumnExecute()->initRowCount();
         }
 
+        private function fileRowCount(){
+            return $this->config->getColumnExecute()->getRowCount();
+        }
+
         public function execute($filePathList){
             try{
                 $this->prepareDb();
@@ -40,14 +44,13 @@
                         $interpreter = new Interpreter();
 
                         $interpreter->addObserver(function(array $columns){
-                            foreach($this->config->getColumnExecute() as $columnExecute){
-                                $columnExecute->execute($columns);
-                            }
+                            $this->config->getColumnExecute()->execute($columns);
                         });
 
-                        $this->initFileRowCount();
                         $lexer->parse($filePath, $interpreter);
-                        $this->logger->info("success path:" . $filePath);
+                        $rowCount = $this->fileRowCount();
+                        $this->logger->info("success row:" . $rowCount . " path:" . $filePath);
+                        $this->initFileRowCount();
                     }
                 }
             }catch(\Exception $e){

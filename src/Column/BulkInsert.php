@@ -10,7 +10,7 @@
         private $headerRowCount = 1;
         private $isHeader = false;
 
-        public function __construct($pdo, $table, $column, $isHeader){
+        public function __construct($pdo, $table, $column, $isHeader=false){
             $this->queueFactory = new \Yuyat_Bulky_QueueFactory(
                 new \Yuyat_Bulky_DbAdapter_PdoMysqlAdapter($pdo),
                 self::MAXROW

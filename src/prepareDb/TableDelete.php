@@ -12,9 +12,8 @@
         public function execute(){
             try{
                 $this->pdo->beginTransaction();
-                $sql  = "DELETE FROM " . $this->table;
-                $stmt = $this->pdo->prepare($sql);
-                $stmt->execute();
+                $sql  = "DELETE FROM `" . $this->table . "`";
+                $this->pdo->query($sql);
                 $this->pdo->commit();
             }catch(PDOException $e){
                 $this->pdo->rollback();
