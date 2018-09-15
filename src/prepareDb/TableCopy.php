@@ -18,7 +18,6 @@
                 $this->pdo->commit();
             }catch(PDOException $e){
                 $this->pdo->rollback();
-                return $e->getMessage();
             }
         }
 

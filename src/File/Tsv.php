@@ -1,6 +1,6 @@
 <?php
     namespace bz0\CSVToDB\File;
-    use bz0\CSVToDB\Import\fileInterface;
+    use bz0\CSVToDB\File\fileInterface;
     use Goodby\CSV\Import\Standard\LexerConfig;
     
     class Tsv implements fileInterface{

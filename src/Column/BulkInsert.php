@@ -1,5 +1,6 @@
 <?php
     namespace bz0\CSVToDB\Column;
+    use bz0\CSVToDB\Column\ColumnExecuteInterface;
     class BulkInsert implements ColumnExecuteInterface{
         private $queueFactory;
         const MAXROW = 1000;

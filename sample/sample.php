@@ -1,4 +1,7 @@
 <?php
+    ini_set("display_errors", 1);
+    error_reporting(-1);
+
     require_once(dirname(__FILE__) . '/../vendor/autoload.php');
     require_once(dirname(__FILE__) . '/../DBConfig.php');
     
@@ -17,9 +20,16 @@
     $table = "test";
     $copyTable = "test_" . date("YmdHis");
     $config->setPrepareDb(new CSVToDB\prepareDb\TableCopy($pdo, $table, $copyTable));
-       
+
+    $column = [
+        'sei',
+        'mei',
+        'yubin',
+        'tel'
+    ];
+
     //ファイルを１行ずつ読み込んだときに行う処理
-    $config->setColumnExecute(new CSVToDB\Column\BulkInsert($pdo, $table));
+    $config->setColumnExecute(new CSVToDB\Column\BulkInsert($pdo, $table, $column));
 
     $filePathList = [
         dirname(__FILE__) . "/file/sjis.csv",

@@ -3,6 +3,7 @@
     use bz0\CSVToDB\File\FileInterface;
     use bz0\CSVToDB\PrepareDb\PrepareDbInterface;
     use bz0\CSVToDB\PostProcess\PostProcessInterface;
+    use bz0\CSVToDB\Column\ColumnExecuteInterface;
 
     class Config{
         private $fileConfig;
@@ -34,7 +35,7 @@
             return $this->postProcessing;
         }
 
-        public function setColumnExecute(ColumnInterface $columnExecute){
+        public function setColumnExecute(ColumnExecuteInterface $columnExecute){
             $this->columnExecute[] = $columnExecute;
         }
 
