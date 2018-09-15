@@ -33,10 +33,14 @@
     //ファイルを読み込む前の事前処理
     //-------------------------------
     //注意：DBの事前処理で使用するテーブル名等は、決してユーザ側で自由に指定させないようにして下さい
+    //SQLインジェクションが起きる可能性があります
     $table = "test";
     $copyTable = "test_" . date("YmdHis");
     $config->setPrepareDb(new CSVToDB\prepareDb\TableCopy($pdo, $table, $copyTable));
 
+    //-------------------------------
+    //ファイルを１行ずつ読み込んだときに行う処理
+    //-------------------------------
     //テーブル項目設定
     $column = [
         'sei',
@@ -44,11 +48,10 @@
         'yubin',
         'tel'
     ];
+    //ヘッダ有無
+    $isHeader = true;
 
-    //-------------------------------
-    //ファイルを１行ずつ読み込んだときに行う処理
-    //-------------------------------
-    $config->setColumnExecute(new CSVToDB\Column\BulkInsert($pdo, $table, $column));
+    $config->setColumnExecute(new CSVToDB\Column\BulkInsert($pdo, $table, $column, $isHeader));
     $filePathList = [
         dirname(__FILE__) . "/file/sjis.csv",
         dirname(__FILE__) . "/file/sjis.tsv"
