@@ -34,7 +34,7 @@ CSV等のファイルをテーブルにインサート（登録）すること�
 
 ### １．準備
 
-#### DBConfig.phpを設定
+#### １－１．必須）DBConfig.phpを設定
 
 DB情報を設定して下さい。
 
@@ -47,7 +47,7 @@ define('USER', '');
 define('PASSWORD', '');
 ```
 
-#### PDO
+#### １－２．必須）PDO設定
 
 ```
 $pdo = new \PDO(DSN, USER, PASSWORD);
@@ -55,7 +55,7 @@ $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); //静的プレースホ�
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //エラー発生時に例外を投げる
 ```
 
-#### ログ（monolog）
+#### １－３．必須）ログ（monolog）
 
 ログ名とログファイルのパスを指定して下さい。
 
@@ -67,7 +67,7 @@ $monolog = new CSVToDB\Monolog($logName, $logPath);
 $logger  = $monolog->setConfig();
 ```
 
-### ２．読み込むファイルの形式を指定
+### ２．必須）読み込むファイルの形式を指定
 
 CSVとTSVを読み込む場合は、下記のように指定します。
 
@@ -78,11 +78,11 @@ $config->setFileConfig(new CSVToDB\File\Csv()); //CSV
 $config->setFileConfig(new CSVToDB\File\Tsv()); //TSV
 ```
 
-### ３．事前処理 / 後処理の設定
+### ３．任意）事前処理 / 後処理の設定
 
 必要であれば下記設定できます。
 
-#### テーブルコピー
+#### ３－１．テーブルコピー
 
 下記を指定して下さい
 
@@ -97,7 +97,7 @@ $config->setPrepareProcess(new CSVToDB\Process\TableCopy($pdo, "バックアッ�
 $config->setPostProcess(new CSVToDB\Process\TableCopy($pdo, "バックアップ元のテーブル名", "バックアップ先のテーブル名"));
 ```
 
-#### テーブルバックアップ（SQLファイル）
+#### ３－２．テーブルバックアップ（SQLファイル）
 
 下記を指定して下さい
 
@@ -112,7 +112,22 @@ $config->setPrepareProcess(new CSVToDB\Process\TableExport($pdo, "バックア�
 $config->setPostProcess(new CSVToDB\Process\TableExport($pdo, "バックアップ元のテーブル名", "バックアップ先のファイルパス"));
 ```
 
-#### ４．チャットワークへの通知
+#### ３－３．テーブル削除（TRUNCATE）
+
+下記を指定して下さい
+
+- PDO
+- バックアップ元のテーブル名
+- バックアップ先のファイルパス
+
+```
+//事前処理
+$config->setPrepareProcess(new CSVToDB\Process\TableDelete($pdo, "削除するテーブル名"));
+//後処理
+$config->setPostProcess(new CSVToDB\Process\TableDelete($pdo, "削除するテーブル名"));
+```
+
+#### ３－４．チャットワークへの通知
 
 下記を指定して下さい
 
@@ -127,7 +142,7 @@ $config->setPrepareProcess(new CSVToDB\Process\ChatworkMessageSend("トークン
 $config->setPostProcess(new CSVToDB\Process\ChatworkMessageSend("トークン", "通知する部屋番号", "通知するメッセージ"));
 ```
 
-### テーブル登録設定
+### ４．テーブル登録設定
 
 下記を指定して下さい
 
