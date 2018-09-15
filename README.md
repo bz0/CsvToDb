@@ -26,25 +26,3 @@ CSV等のファイルをDBにInsertする前の事前処理と、Insert後の処
 
 CSV等のファイルをテーブルにインサート（登録）することができます。  
 バルクインサートで一括登録します。
-
-## 実装
-
-### 準備
-
-#### PDO
-
-```
-//PDO
-$pdo = new \PDO(DSN, USER, PASSWORD);
-$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); //静的プレースホルダを指定
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //エラー発生時に例外を投げる
-```
-#### ログ（monolog）
-
-```
-//Monolog設定
-$logName = "logTest";
-$logPath = dirname(__FILE__) . "/log/" . date("YmdHis") . ".log";
-$monolog = new CSVToDB\Monolog($logName, $logPath);
-$logger  = $monolog->setConfig();
-```
