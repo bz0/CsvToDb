@@ -142,7 +142,7 @@ $config->setPrepareProcess(new CSVToDB\Process\ChatworkMessageSend("トークン
 $config->setPostProcess(new CSVToDB\Process\ChatworkMessageSend("トークン", "通知する部屋番号", "通知するメッセージ"));
 ```
 
-### ４．テーブル登録設定
+### ４．必須）テーブル登録設定
 
 下記を指定して下さい
 
@@ -166,7 +166,7 @@ $isHeader = true;
 $config->setColumnExecute(new CSVToDB\Column\BulkInsert($pdo, "テーブル名", $column, $isHeader));
 ```
 
-### ５．実行
+### ５．必須）実行
 
 読み込むファイルを指定して、実行します
 
