@@ -1,6 +1,6 @@
 # CsvToDb
 
-ファイルの中身をDBにInsertすること・Insertする前後の処理を簡単に行えます。
+ファイルの中身をDBにInsertする・Insertする前後の処理を簡単に行えます。
 
 ## できること
 
