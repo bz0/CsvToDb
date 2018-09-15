@@ -8,6 +8,7 @@
         private $fileConfig;
         private $prepareDb;
         private $postProcessing;
+        private $columnExecute;
 
         public function setFileConfig(FileInterface $fileConfig){
             $this->fileConfig[] = $fileConfig;
@@ -31,5 +32,13 @@
 
         public function getPostProcessing(){
             return $this->postProcessing;
+        }
+
+        public function setColumnExecute(ColumnInterface $columnExecute){
+            $this->columnExecute[] = $columnExecute;
+        }
+
+        public function getColumnExecute(){
+            return $this->columnExecute;
         }
     }

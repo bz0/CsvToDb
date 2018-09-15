@@ -1,14 +1,14 @@
 <?php
     namespace bz0\CSVToDB\Column;
-    class BUlkInsert implements ColumnInterface{
+    class BulkInsert implements ColumnExecuteInterface{
         private $queueFactory;
         const MAXROW = 1000;
         private $table;
         private $queue;
 
         public function __construct($pdo, $table, $column){
-            $this->queueFactory = new Yuyat_Bulky_QueueFactory(
-                new Yuyat_Bulky_DbAdapter_PdoMysqlAdapter($pdo),
+            $this->queueFactory = new \Yuyat_Bulky_QueueFactory(
+                new \Yuyat_Bulky_DbAdapter_PdoMysqlAdapter($pdo),
                 self::MAXROW
             );
             $this->table = $table;
@@ -28,9 +28,5 @@
 
         public function execute($row){
             $this->queue->insert($row);
-        }
-
-        public function accept($class){
-            return strtolower(get_class($this)) === $class;
         }
     }
