@@ -148,7 +148,7 @@ $config->setPostProcess(new CSVToDB\Process\ChatworkMessageSend("トークン", 
 
 - PDO
 - テーブル名
-- テーブルカラム
+- テーブルカラム（CSVでの並び順にする）
 - ヘッダ有無の指定
 
 ```
