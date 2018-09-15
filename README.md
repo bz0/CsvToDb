@@ -32,7 +32,7 @@ CSV等のファイルをテーブルにインサート（登録）すること�
 
 ## 実装
 
-### 準備
+### １．準備
 
 #### DBConfig.phpを設定
 
@@ -67,7 +67,7 @@ $monolog = new CSVToDB\Monolog($logName, $logPath);
 $logger  = $monolog->setConfig();
 ```
 
-### 読み込むファイルの形式を指定
+### ２．読み込むファイルの形式を指定
 
 CSVとTSVを読み込む場合は、下記のように指定します。
 
@@ -78,7 +78,9 @@ $config->setFileConfig(new CSVToDB\File\Csv()); //CSV
 $config->setFileConfig(new CSVToDB\File\Tsv()); //TSV
 ```
 
-### 事前処理 / 後処理の設定
+### ３．事前処理 / 後処理の設定
+
+必要であれば下記設定できます。
 
 #### テーブルコピー
 
@@ -110,7 +112,7 @@ $config->setPrepareProcess(new CSVToDB\Process\TableExport($pdo, "バックア�
 $config->setPostProcess(new CSVToDB\Process\TableExport($pdo, "バックアップ元のテーブル名", "バックアップ先のファイルパス"));
 ```
 
-#### チャットワークへの通知
+#### ４．チャットワークへの通知
 
 下記を指定して下さい
 
@@ -123,4 +125,42 @@ $config->setPostProcess(new CSVToDB\Process\TableExport($pdo, "バックアッ�
 $config->setPrepareProcess(new CSVToDB\Process\ChatworkMessageSend("トークン", "通知する部屋番号", "通知するメッセージ"));
 //後処理
 $config->setPostProcess(new CSVToDB\Process\ChatworkMessageSend("トークン", "通知する部屋番号", "通知するメッセージ"));
+```
+
+### テーブル登録設定
+
+下記を指定して下さい
+
+- PDO
+- テーブル名
+- テーブルカラム
+- ヘッダ有無の指定
+
+```
+//テーブルカラム設定
+$column = [
+    'sei',
+    'mei',
+    'yubin',
+    'tel'
+];
+
+//ヘッダ有無
+$isHeader = true;
+
+$config->setColumnExecute(new CSVToDB\Column\BulkInsert($pdo, "テーブル名", $column, $isHeader));
+```
+
+### ５．実行
+
+読み込むファイルを指定して、実行します
+
+```
+$filePathList = [
+    dirname(__FILE__) . "/file/sjis.csv",
+    dirname(__FILE__) . "/file/sjis.tsv"
+];
+
+$csvtodb = new CSVToDB\CSVToDB($config, $logger);
+$csvtodb->execute($filePathList);
 ```
