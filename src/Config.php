@@ -16,7 +16,7 @@
         }
 
         public function getFileConfig(){
-            return $fileConfig;
+            return $this->fileConfig;
         }
 
         public function setPrepareDb(PrepareDbInterface $prepareDb){

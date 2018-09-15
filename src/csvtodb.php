@@ -1,5 +1,9 @@
 <?php
     namespace bz0\CSVToDB;
+
+    use Goodby\CSV\Import\Standard\Lexer;
+    use Goodby\CSV\Import\Standard\Interpreter;
+
     use bz0\CSVToDB\File\Csv;
     use bz0\CSVToDB\File\Tsv;
     use bz0\CSVToDB\prepareDb\PrepareDbInterface;
@@ -30,17 +34,17 @@
                     if($config = $this->fileConfigSelector($finfo['extension'])){
                         $lexer = new Lexer($config);
                         $interpreter = new Interpreter();
-    
+
                         $interpreter->addObserver(function(array $columns){
-                            foreach($this->columnExecList as $columnExec){
-                                $columnExec->execute($columns);
+                            foreach($this->config->getColumnExecute() as $columnExecute){
+                                $columnExecute->execute($columns);
                             }
                         });
         
                         $lexer->parse($filePath, $interpreter);
                     }
                 }
-            }catch(Exception $e){
+            }catch(\Exception $e){
                 $this->logger->error($e->getMessage());
             }
         }

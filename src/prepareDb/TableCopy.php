@@ -8,6 +8,7 @@
         public function __construct($pdo, $table, $copyTable){
             $this->pdo = $pdo;
             $this->table = $table;
+            $this->copyTable = $copyTable;
         }
 
         public function execute(){
@@ -22,16 +23,13 @@
         }
 
         private function copy(){
-            $sql = "CREATE TABLE " . $this->pdo->quote($this->copyTable) 
-                 . " LIKE " . $this->pdo->quote($this->table);
-            $stmt = $this->pdo->prepare($sql);
-            return $stmt->execute($params);
+            $sql = "CREATE TABLE `{$this->copyTable}` LIKE `{$this->table}`";
+            $this->pdo->query($sql);
         }
 
         private function insert(){
-            $sql  = "INSERT INTO " . $this->pdo->quote($this->copyTable)
-                  . " SELECT * FROM " . $this->pdo->quote($this->table);
-            $stmt = $this->pdo->prepare($sql);
-            $res  = $stmt->execute($params);
+            $sql  = "INSERT INTO `{$this->copyTable}`"
+                  . " SELECT * FROM `{$this->table}`";
+            $this->pdo->query($sql);
         }
     }

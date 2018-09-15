@@ -16,11 +16,11 @@
         public function config(){
             $config = new LexerConfig();
             $config
-                ->setDelimiter(self::config['DELIMITER'])
-                ->setEnclosure(self::config['ENCLOSURE'])
-                ->setEscape(self::config['ESCAPE'])
-                ->setToCharset(self::config['FROMCHARSET'])
-                ->setFromCharset(self::config['TOCHARSET'])
+                ->setDelimiter(self::$config['DELIMITER'])
+                ->setEnclosure(self::$config['ENCLOSURE'])
+                ->setEscape(self::$config['ESCAPE'])
+                ->setToCharset(self::$config['FROMCHARSET'])
+                ->setFromCharset(self::$config['TOCHARSET'])
             ;
 
             return $config;

@@ -12,22 +12,32 @@
 
     use bz0\CSVToDB as CSVToDB;
 
-    //Monolog
+    //-------------------------------
+    //Monolog設定
+    //-------------------------------
     $logName = "logTest";
     $logPath = dirname(__FILE__) . "/log/" . date("YmdHis") . ".log";
     $monolog = new CSVToDB\Monolog($logName, $logPath);
     $logger  = $monolog->setConfig();
 
     $config = new CSVToDB\Config();
-    //読み込むファイル形式を指定（拡張子で形式判別するので違ってると受け付けません）
-    $config->setFileConfig(new CSVToDB\File\Csv());
-    $config->setFileConfig(new CSVToDB\File\Tsv());
 
+    //-------------------------------
+    //読み込むファイル形式を指定
+    //-------------------------------
+    //注意：拡張子で形式判別するので違ってるとファイルを受け付けません
+    $config->setFileConfig(new CSVToDB\File\Csv()); //CSV
+    $config->setFileConfig(new CSVToDB\File\Tsv()); //TSV
+
+    //-------------------------------
     //ファイルを読み込む前の事前処理
+    //-------------------------------
+    //注意：DBの事前処理で使用するテーブル名等は、決してユーザ側で自由に指定させないようにして下さい
     $table = "test";
     $copyTable = "test_" . date("YmdHis");
     $config->setPrepareDb(new CSVToDB\prepareDb\TableCopy($pdo, $table, $copyTable));
 
+    //テーブル項目設定
     $column = [
         'sei',
         'mei',
@@ -35,9 +45,10 @@
         'tel'
     ];
 
+    //-------------------------------
     //ファイルを１行ずつ読み込んだときに行う処理
+    //-------------------------------
     $config->setColumnExecute(new CSVToDB\Column\BulkInsert($pdo, $table, $column));
-
     $filePathList = [
         dirname(__FILE__) . "/file/sjis.csv",
         dirname(__FILE__) . "/file/sjis.tsv"
