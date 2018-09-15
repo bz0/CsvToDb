@@ -12,11 +12,13 @@
         }
 
         public function execute(){
-            $command = "MYSQL_PWD='" . PASSWORD . "' mysqldump -u "
+            $command = "MYSQL_PWD=\"" . PASSWORD . "\" mysqldump -u "
                   . USER . " -h " . HOST . " " . DBNAME . " " 
                   . $this->table . " > " . $this->bkupPath;
-            exec($command, $out, $ret);
-            var_dump($out);
-            var_dump($ret);
+            exec($command, $out, $status);
+
+            if ($status!=0){
+                throw new \Exception("TableExport: バックアップに失敗しました");
+            }
         }
     }
