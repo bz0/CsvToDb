@@ -24,6 +24,10 @@
             }
         }
 
+        private function initFileRowCount(){
+            $this->config->getColumnExecute()->initRowCount();
+        }
+
         public function execute($filePathList){
             try{
                 $this->prepareDb();
@@ -40,8 +44,10 @@
                                 $columnExecute->execute($columns);
                             }
                         });
-        
+
+                        $this->initFileRowCount();
                         $lexer->parse($filePath, $interpreter);
+                        $this->logger->info("success path:" . $filePath);
                     }
                 }
             }catch(\Exception $e){

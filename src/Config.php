@@ -36,7 +36,7 @@
         }
 
         public function setColumnExecute(ColumnExecuteInterface $columnExecute){
-            $this->columnExecute[] = $columnExecute;
+            $this->columnExecute = $columnExecute;
         }
 
         public function getColumnExecute(){
