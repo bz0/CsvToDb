@@ -13,4 +13,8 @@
             $sql  = "TRUNCATE TABLE `" . $this->table . "`";
             $this->pdo->query($sql);
         }
+
+        public function setPDO(\PDO $pdo){
+            $this->pdo = $pdo;
+        }
     }

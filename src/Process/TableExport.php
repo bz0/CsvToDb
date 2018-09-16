@@ -21,4 +21,8 @@
                 throw new \Exception(get_class($this) . ": バックアップに失敗しました");
             }
         }
+
+        public function setPDO(\PDO $pdo){
+            $this->pdo = $pdo;
+        }
     }

@@ -5,8 +5,7 @@
         private $table;
         private $copyTable;
 
-        public function __construct($pdo, $table, $copyTable){
-            $this->pdo = $pdo;
+        public function __construct($table, $copyTable){
             $this->table = $table;
             $this->copyTable = $copyTable;
         }
@@ -31,5 +30,9 @@
             $sql  = "INSERT INTO `{$this->copyTable}`"
                   . " SELECT * FROM `{$this->table}`";
             $this->pdo->query($sql);
+        }
+
+        public function setPDO(\PDO $pdo){
+            $this->pdo = $pdo;
         }
     }
