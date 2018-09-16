@@ -22,15 +22,4 @@
                 throw new \Exception(get_class($this) . ": チャットワークへのメッセージの通知に失敗しました");
             }
         }
-
-        private function copy(){
-            $sql = "CREATE TABLE `{$this->copyTable}` LIKE `{$this->table}`";
-            $this->pdo->query($sql);
-        }
-
-        private function insert(){
-            $sql  = "INSERT INTO `{$this->copyTable}`"
-                  . " SELECT * FROM `{$this->table}`";
-            $this->pdo->query($sql);
-        }
     }

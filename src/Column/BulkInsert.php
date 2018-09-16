@@ -9,8 +9,15 @@
         private $rowCount = 0;
         private $headerRowCount = 1;
         private $isHeader = false;
+        private $csvToDbMap;
 
         public function __construct($pdo, $table, $column, $isHeader=false){
+            $this->csvToDbMap = array();
+            if (!(array_values($column) === $column)) {
+                $this->csvToDbMap = $column;
+                $column = array_keys($column);
+            }
+
             $this->queueFactory = new \Yuyat_Bulky_QueueFactory(
                 new \Yuyat_Bulky_DbAdapter_PdoMysqlAdapter($pdo),
                 self::MAXROW
@@ -34,10 +41,22 @@
 
         public function execute($row){
             if ($this->permit()){
+                $row = $this->formatter($row);
                 $this->queue->insert($row);
             }
             
             $this->addRowCount();
+        }
+
+        private function formatter($row){
+            if($this->csvToDbMap){
+                foreach($this->csvToDbMap as $key => $address){
+                    $tmp[] = $row[$address];
+                }
+                $row = $tmp;       
+            }
+
+            return $row;
         }
 
         private function setConfig($column){

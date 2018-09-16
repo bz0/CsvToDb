@@ -19,12 +19,20 @@
         }
 
         public function prepareProcess(){
+            if (!$this->config->getPrepareProcess()){
+                return false;
+            }
+
             foreach($this->config->getPrepareProcess() as $prepare){
                 $prepare->execute();
             }
         }
 
         public function postProcess(){
+            if (!$this->config->getPostProcess()){
+                return false;
+            }
+
             foreach($this->config->getPostProcess() as $postProcess){
                 $postProcess->execute();
             }

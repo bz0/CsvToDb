@@ -1,6 +1,6 @@
 <?php
     namespace bz0\CSVToDB\Process;
-    class TableDelete implements ProcessInterface{
+    class TableTruncate implements ProcessInterface{
         private $pdo;
         private $table;
 
@@ -10,13 +10,7 @@
         }
 
         public function execute(){
-            try{
-                $this->pdo->beginTransaction();
-                $sql  = "DELETE FROM `" . $this->table . "`";
-                $this->pdo->query($sql);
-                $this->pdo->commit();
-            }catch(PDOException $e){
-                $this->pdo->rollback();
-            }
+            $sql  = "TRUNCATE TABLE `" . $this->table . "`";
+            $this->pdo->query($sql);
         }
     }
