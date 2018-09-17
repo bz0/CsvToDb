@@ -3,7 +3,7 @@
     require_once(dirname(__FILE__) . '/../common/Generic_Tests_DatabaseTestCase.php');
 
     use PHPUnit\DbUnit\DataSet\CsvDataSet;
-    use bz0\CSVToDB\prepareDb\TableDelete;
+    use bz0\CSVToDB\Process\TableCopy;
 
     class TableCopyTest extends Generic_Tests_DatabaseTestCase
     { 
@@ -22,10 +22,11 @@
             var_dump($this->getConnection()->getRowCount('test'));
             $this->assertEquals(4, $this->getConnection()->getRowCount('test'));
 
-            $table = new TableDelete(parent::$pdo, 'test');
+            $table = new TableCopy('test', 'test_copy');
+            $table->setPDO($this->getPdo());
             $table->execute();
 
-            var_dump($this->getConnection()->getRowCount('test'));
-            $this->assertEquals(0, $this->getConnection()->getRowCount('test'));
+            var_dump($this->getConnection()->getRowCount('test_copy'));
+            $this->assertEquals(4, $this->getConnection()->getRowCount('test_copy'));
         }
     }

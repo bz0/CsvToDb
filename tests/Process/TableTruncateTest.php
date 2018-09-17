@@ -3,7 +3,7 @@
     require_once(dirname(__FILE__) . '/../common/Generic_Tests_DatabaseTestCase.php');
 
     use PHPUnit\DbUnit\DataSet\CsvDataSet;
-    use bz0\CSVToDB\prepareDb\TableDelete;
+    use bz0\CSVToDB\Process\TableTruncate;
 
     class TableTruncateTest extends Generic_Tests_DatabaseTestCase
     { 
@@ -22,7 +22,8 @@
             var_dump($this->getConnection()->getRowCount('test'));
             $this->assertEquals(4, $this->getConnection()->getRowCount('test'));
 
-            $table = new TableTruncate(parent::$pdo, 'test');
+            $table = new TableTruncate('test');
+            $table->setPDO($this->getPdo());
             $table->execute();
 
             var_dump($this->getConnection()->getRowCount('test'));

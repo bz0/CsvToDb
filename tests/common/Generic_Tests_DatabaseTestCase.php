@@ -23,4 +23,8 @@ abstract class Generic_Tests_DatabaseTestCase extends TestCase
 
         return $this->conn;
     }
+
+    public function getPdo(){
+        return self::$pdo;
+    }
 }
