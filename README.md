@@ -5,18 +5,16 @@
 
 ## できること
 
-### １．読み込むファイルの形式を複数指定可
+### １．読み込み可能ファイル
 
-現状下記が利用可能です。
-
-ファイルの拡張子でどのファイル形式かを判別するので、もし拡張子が間違っていた場合はファイルの読み込みができません。
+下記が可能です。（文字コード等、個別に指定可能）
 
 - CSV(文字コード：SJIS)
 - TSV(文字コード：SJIS)
 
 ### ２．事前処理 / 後処理
 
-CSV等のファイルをDBにInsertする前の事前処理と、Insert後の処理を簡単に設定することができます。  
+ファイルをテーブルに登録する前の事前処理 / 後処理を簡単に行えます。  
 用意されている処理は下記です。
 
 - テーブルの削除
@@ -26,16 +24,53 @@ CSV等のファイルをDBにInsertする前の事前処理と、Insert後の処
 
 ### ３．テーブルへのインサート（登録）
 
-CSV等のファイルをテーブルにインサート（登録）することができます。  
+ファイルをテーブルに登録することができます。  
 バルクインサートで一括登録します。
-
 
 
 ## 実装
 
-### １．準備
+### サンプル
 
-#### １－１．必須）DBConfig.phpを設定
+```
+require_once(dirname(__FILE__) . '/../vendor/autoload.php');
+require_once(dirname(__FILE__) . '/../DBConfig.php');
+
+use bz0\CSVToDB as CSVToDB;
+$client = new CSVToDB\Client();
+
+//事前処理：テーブルコピー
+$table     = "test";
+$copyTable = "test_" . date("YmdHis");
+$client->setPrepareProcess(new CSVToDB\Process\TableCopy($table, $copyTable));
+//事前処理：バックアップ
+$bkupPath  = dirname(__FILE__) . "/bkup.sql";
+$client->setPrepareProcess(new CSVToDB\Process\TableExport($table, $bkupPath));
+//事前処理：チャット通知
+$client->setPrepareProcess(new CSVToDB\Process\ChatworkMessageSend("TOKEN", "ROOMID", "メッセージ"));
+//後処理：テーブルコピー
+$table     = "test";
+$copyTable = "run_" . date("YmdHis");
+$client->setPostProcess(new CSVToDB\Process\TableCopy($table, $copyTable));
+
+//CSVとテーブルカラムの指定
+$column = array(
+    'sei',
+    'mei',
+    'yubin',
+    'tel'
+);
+$client->setColumnExecute(new CSVToDB\Column\BulkInsert($table, $column, true));
+$filePathList = [
+    dirname(__FILE__) . "/file/sjis.csv",
+    dirname(__FILE__) . "/file/sjis.tsv"
+];
+$client->execute($filePathList);
+```
+
+### 必須）１．準備
+
+#### DBConfig.phpを設定
 
 DB情報を設定して下さい。
 
@@ -43,92 +78,70 @@ DB情報を設定して下さい。
 define('HOST', '');
 define('DBNAME', '');
 define('CHARSET', '');
-define('DSN', 'mysql:dbname=' . DBNAME . ';host=' . HOST . ';charset=' . CHARSET);
+define('DSN', '');
 define('USER', '');
 define('PASSWORD', '');
 ```
 
-#### １－２．必須）PDO設定
-
-```
-$pdo = new \PDO(DSN, USER, PASSWORD);
-$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); //静的プレースホルダを指定
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //エラー発生時に例外を投げる
-```
-
-#### １－３．必須）ログ（monolog）
-
-ログ名とログファイルのパスを指定して下さい。
+### 必須）クライアントのインスタンスを生成する
 
 ```
 use bz0\CSVToDB as CSVToDB;
-$logName = "logTest";
-$logPath = dirname(__FILE__) . "/log/" . date("YmdHis") . ".log";
-$monolog = new CSVToDB\Monolog($logName, $logPath);
-$logger  = $monolog->setConfig();
+$client = new CSVToDB\Client();
 ```
 
-### ２．必須）読み込むファイルの形式を指定
-
-CSVとTSVを読み込む場合は、下記のように指定します。
-
-```
-$config = new CSVToDB\Config();
-//注意：拡張子で形式判別するので違ってるとファイルを受け付けません
-$config->setFileConfig(new CSVToDB\File\Csv()); //CSV
-$config->setFileConfig(new CSVToDB\File\Tsv()); //TSV
-```
-
-### ３．任意）事前処理 / 後処理の設定
+### 任意）２．事前処理 / 後処理の設定
 
 必要であれば下記設定できます。
 
-#### ３－１．テーブルコピー
+#### テーブルコピー
 
 下記を指定して下さい
 
-- PDO
 - バックアップ元のテーブル名
 - バックアップ先のテーブル名
 
 ```
+$table     = "test";
+$copyTable = "test_" . date("YmdHis");
+
 //事前処理
-$config->setPrepareProcess(new CSVToDB\Process\TableCopy($pdo, "バックアップ元のテーブル名", "バックアップ先のテーブル名"));
+$client->setPrepareProcess(new CSVToDB\Process\TableCopy($table, $copyTable));
 //後処理
-$config->setPostProcess(new CSVToDB\Process\TableCopy($pdo, "バックアップ元のテーブル名", "バックアップ先のテーブル名"));
+$client->setPostProcess(new CSVToDB\Process\TableCopy($table, $copyTable));
 ```
 
-#### ３－２．テーブルバックアップ（SQLファイル）
+#### テーブルバックアップ（SQLファイル）
 
 下記を指定して下さい
 
-- PDO
 - バックアップ元のテーブル名
 - バックアップ先のファイルパス
 
 ```
+$table     = "test";
+$bkupPath  = dirname(__FILE__) . "/bkup.sql";
+
 //事前処理
-$config->setPrepareProcess(new CSVToDB\Process\TableExport($pdo, "バックアップ元のテーブル名", "バックアップ先のファイルパス"));
+$client->setPrepareProcess(new CSVToDB\Process\TableExport($table, $bkupPath));
 //後処理
-$config->setPostProcess(new CSVToDB\Process\TableExport($pdo, "バックアップ元のテーブル名", "バックアップ先のファイルパス"));
+$client->setPostProcess(new CSVToDB\Process\TableExport($table, $bkupPath));
 ```
 
-#### ３－３．テーブル削除（TRUNCATE）
+#### テーブル削除（TRUNCATE）
 
 下記を指定して下さい
 
-- PDO
-- バックアップ元のテーブル名
-- バックアップ先のファイルパス
+- 削除するテーブル名
 
 ```
 //事前処理
-$config->setPrepareProcess(new CSVToDB\Process\TableDelete($pdo, "削除するテーブル名"));
+$config->setPrepareProcess(new CSVToDB\Process\TableTruncate($table));
 //後処理
-$config->setPostProcess(new CSVToDB\Process\TableDelete($pdo, "削除するテーブル名"));
+$config->setPostProcess(new CSVToDB\Process\TableTruncate($table));
 ```
 
-#### ３－４．チャットワークへの通知
+#### チャットワークへの通知
 
 下記を指定して下さい
 
@@ -138,33 +151,27 @@ $config->setPostProcess(new CSVToDB\Process\TableDelete($pdo, "削除するテ�
 
 ```
 //事前処理
-$config->setPrepareProcess(new CSVToDB\Process\ChatworkMessageSend("トークン", "通知する部屋番号", "通知するメッセージ"));
+$client->setPrepareProcess(new CSVToDB\Process\ChatworkMessageSend("TOKEN", "通知する部屋番号", "通知するメッセージ"));
 //後処理
-$config->setPostProcess(new CSVToDB\Process\ChatworkMessageSend("トークン", "通知する部屋番号", "通知するメッセージ"));
+$client->setPostProcess(new CSVToDB\Process\ChatworkMessageSend("TOKEN", "通知する部屋番号", "通知するメッセージ"));
 ```
 
 ### ４．必須）テーブル登録設定
 
 下記を指定して下さい
 
-- PDO
 - テーブル名
 - テーブルカラム（CSVでの並び順にする）
 - ヘッダ有無の指定
 
 ```
-//テーブルカラム設定
-$column = [
+$column = array(
     'sei',
     'mei',
     'yubin',
     'tel'
-];
-
-//ヘッダ有無
-$isHeader = true;
-
-$config->setColumnExecute(new CSVToDB\Column\BulkInsert($pdo, "テーブル名", $column, $isHeader));
+);
+$client->setColumnExecute(new CSVToDB\Column\BulkInsert($table, $column, true));
 ```
 
 ### ５．必須）実行
@@ -177,6 +184,5 @@ $filePathList = [
     dirname(__FILE__) . "/file/sjis.tsv"
 ];
 
-$csvtodb = new CSVToDB\CSVToDB($config, $logger);
-$csvtodb->execute($filePathList);
+$client->execute($filePathList);
 ```
