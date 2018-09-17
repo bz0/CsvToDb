@@ -6,7 +6,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "*",
-        "phpunit/dbunit": "^4.0"
+        "phpunit/dbunit": "^4.0",
+        "satooshi/php-coveralls": "^2.0"
     },
     "autoload": {
         "psr-4": {

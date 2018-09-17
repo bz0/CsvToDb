@@ -29,7 +29,7 @@
 
         private function defaultMonolog(){
             $logName = "log";
-            $logPath = dirname(__DIR__) . "/" . date("YmdHis") . ".log";
+            $logPath = dirname(__DIR__) . "/log/" . date("YmdHis") . ".log";
             $monolog = new Monolog($logName, $logPath);
             $this->logger  = $monolog->setConfig();
         }
