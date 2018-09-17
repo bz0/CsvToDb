@@ -2,10 +2,12 @@
     "require": {
         "goodby/csv": "*",
         "yuyat/bulky": "*",
-        "monolog/monolog": "^1.23"
+        "monolog/monolog": "*"
     },
     "require-dev": {
-        "satooshi/php-coveralls": "^2.0"
+        "phpunit/phpunit": "*",
+        "phpunit/dbunit": "*",
+        "satooshi/php-coveralls": "*"
     },
     "autoload": {
         "psr-4": {
