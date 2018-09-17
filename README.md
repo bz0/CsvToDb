@@ -1,5 +1,7 @@
 # CsvToDb
 
+[![Coverage Status](https://coveralls.io/repos/github/bz0/CsvToDb/badge.svg?branch=%28detached+from+4ce23fe%29)](https://coveralls.io/github/bz0/CsvToDb?branch=%28detached+from+4ce23fe%29)
+
 複数のCSV/TSVファイルをテーブル登録できます。
 また、ありがちな前処理 / 後処理を簡単に行えます。
 
