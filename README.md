@@ -156,7 +156,7 @@ $client->setPrepareProcess(new CSVToDB\Process\ChatworkMessageSend("TOKEN", "通
 $client->setPostProcess(new CSVToDB\Process\ChatworkMessageSend("TOKEN", "通知する部屋番号", "通知するメッセージ"));
 ```
 
-### ４．必須）テーブル登録設定
+### 必須）３．テーブル登録設定
 
 下記を指定して下さい
 
@@ -174,7 +174,7 @@ $column = array(
 $client->setColumnExecute(new CSVToDB\Column\BulkInsert($table, $column, true));
 ```
 
-### ５．必須）実行
+### 必須）４．実行
 
 読み込むファイルを指定して、実行します
 
