@@ -14,6 +14,8 @@
             $command = "MYSQL_PWD=\"" . PASSWORD . "\" mysqldump -u "
             . USER . " -h " . HOST . " " . DBNAME . " " 
             . $this->table . " > " . $this->bkupPath;
+
+            echo $command;
             $res = exec($command, $out, $status);
 
             if ($status!==0){
