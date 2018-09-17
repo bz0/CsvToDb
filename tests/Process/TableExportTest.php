@@ -23,7 +23,7 @@
             // 4件insertしたのでテーブルの件数が4件になっていることを確認する
             $this->assertEquals(4, $this->getConnection()->getRowCount('test'));
 
-            $bkupPath = dirname(__FILE__) . "test.sql";
+            $bkupPath = dirname(__FILE__) . "/test.sql";
             $table = new TableExport('test', $bkupPath);
             $table->setPDO($this->getPdo());
             $res = $table->execute();
