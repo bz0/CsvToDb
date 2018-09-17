@@ -5,47 +5,24 @@
     require_once(dirname(__FILE__) . '/../vendor/autoload.php');
     require_once(dirname(__FILE__) . '/../DBConfig.php');
     
-    //PDO
-    $pdo = new \PDO(DSN, USER, PASSWORD);
-    $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); //静的プレースホルダを指定
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //エラー発生時に例外を投げる
-
     use bz0\CSVToDB as CSVToDB;
+    $client = new CSVToDB\Client();
 
-    //-------------------------------
-    //Monolog設定
-    //-------------------------------
-    $logName = "logTest";
-    $logPath = dirname(__FILE__) . "/log/" . date("YmdHis") . ".log";
-    $monolog = new CSVToDB\Monolog($logName, $logPath);
-    $logger  = $monolog->setConfig();
-
-    $config = new CSVToDB\Config();
-
-    //-------------------------------
-    //読み込むファイル形式を指定
-    //-------------------------------
-    //注意：拡張子で形式判別するので違ってるとファイルを受け付けません
-    $config->setFileConfig(new CSVToDB\File\Csv()); //CSV
-    $config->setFileConfig(new CSVToDB\File\Tsv()); //TSV
-
-    //-------------------------------
-    //ファイルを１行ずつ読み込んだときに行う処理
-    //-------------------------------
-    //テーブル項目設定
-    $column = array(
-        'sei'   => 0,
-        'yubin' => 2
-    );
-    //テーブル名
     $table = "test";
-    //ヘッダ有無
-    $isHeader = true;
-    $config->setColumnExecute(new CSVToDB\Column\BulkInsert($pdo, $table, $column, $isHeader));
-    
     $filePathList = [
         dirname(__FILE__) . "/file/sjis.csv",
         dirname(__FILE__) . "/file/sjis.tsv"
     ];
-    $csvtodb = new CSVToDB\CSVToDB($config, $logger);
-    $csvtodb->execute($filePathList);
+
+    $column = array(
+        'sei'   => 0,
+        'yubin' => 2
+    );
+
+    $client->setColumnExecute(new CSVToDB\Column\BulkInsert($table, $column, true));
+    $filePathList = [
+        dirname(__FILE__) . "/file/sjis.csv",
+        dirname(__FILE__) . "/file/sjis.tsv"
+    ];
+
+    $client->execute($filePathList);

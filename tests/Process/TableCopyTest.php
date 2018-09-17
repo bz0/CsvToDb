@@ -5,7 +5,7 @@
     use PHPUnit\DbUnit\DataSet\CsvDataSet;
     use bz0\CSVToDB\prepareDb\TableDelete;
 
-    class TableDeleteTest extends Generic_Tests_DatabaseTestCase
+    class TableCopyTest extends Generic_Tests_DatabaseTestCase
     { 
         /** 
          * @return PHPUnit_Extensions_Database_DataSet_IDataSet 
