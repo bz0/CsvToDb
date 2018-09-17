@@ -1,5 +1,6 @@
 # CsvToDb
 
+[![Build Status](https://travis-ci.org/bz0/CsvToDb.svg?branch=master)](https://travis-ci.org/bz0/CsvToDb)
 [![Coverage Status](https://coveralls.io/repos/github/bz0/CsvToDb/badge.svg?branch=%28detached+from+4ce23fe%29)](https://coveralls.io/github/bz0/CsvToDb?branch=%28detached+from+4ce23fe%29)
 
 複数のCSV/TSVファイルをテーブル登録できます。
