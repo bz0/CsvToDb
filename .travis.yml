@@ -5,6 +5,8 @@ php:
   - '7.0'
 dist: precise
 before_script:
+  - mysql -uroot -e "create database test"
+  - mysql -uroot -e "use test; CREATE TABLE `test` ( `id` int(6) NOT NULL, `sei` varchar(256) NOT NULL, `mei` varchar(256) NOT NULL, `yubin` varchar(256) NOT NULL, `tel` varchar(256) NOT NULL, `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"
   - composer self-update
   - composer install
 script:
