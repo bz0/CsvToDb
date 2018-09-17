@@ -4,8 +4,7 @@
         private $pdo;
         private $table;
 
-        public function __construct($pdo, $table){
-            $this->pdo = $pdo;
+        public function __construct($table){
             $this->table = $table;
         }
 

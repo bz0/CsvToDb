@@ -5,8 +5,7 @@
         private $table;
         private $bkupPath;
 
-        public function __construct($pdo, $table, $bkupPath){
-            $this->pdo      = $pdo;
+        public function __construct($table, $bkupPath){
             $this->table    = $table;
             $this->bkupPath = $bkupPath;
         }

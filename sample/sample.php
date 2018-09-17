@@ -14,7 +14,7 @@
 
     $bkupPath  = dirname(__FILE__) . "/bkup.sql";
     $client->setPrepareProcess(new CSVToDB\Process\TableExport($table, $bkupPath));
-    $client->setPrepareProcess(new CSVToDB\Process\ChatworkMessageSend("TOKEN", 1613708, "Hello world!!"));
+    $client->setPrepareProcess(new CSVToDB\Process\ChatworkMessageSend("ef35192f2f60e27b851e47f8706c0ac6", 1613708, "Hello world!!"));
 
     $table     = "test";
     $copyTable = "run_" . date("YmdHis");
@@ -26,7 +26,7 @@
         'yubin',
         'tel'
     );
-    $client->setColumnExecute(new CSVToDB\Column\BulkInsert($pdo, $table, $column, true));
+    $client->setColumnExecute(new CSVToDB\Column\BulkInsert($table, $column, true));
     $filePathList = [
         dirname(__FILE__) . "/file/sjis.csv",
         dirname(__FILE__) . "/file/sjis.tsv"

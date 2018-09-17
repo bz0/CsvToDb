@@ -10,21 +10,18 @@
         private $headerRowCount = 1;
         private $isHeader = false;
         private $csvToDbMap;
+        private $column;
 
-        public function __construct($pdo, $table, $column, $isHeader=false){
+        public function __construct($table, $column, $isHeader=false){
             $this->csvToDbMap = array();
             if (!(array_values($column) === $column)) {
                 $this->csvToDbMap = $column;
                 $column = array_keys($column);
             }
 
-            $this->queueFactory = new \Yuyat_Bulky_QueueFactory(
-                new \Yuyat_Bulky_DbAdapter_PdoMysqlAdapter($pdo),
-                self::MAXROW
-            );
-            $this->table = $table;
-            $this->setConfig($column);
+            $this->table    = $table;
             $this->isHeader = $isHeader;
+            $this->column   = $column;
         }
 
         public function setIsHeader($isHeader){
@@ -59,10 +56,15 @@
             return $row;
         }
 
-        private function setConfig($column){
+        public function setConfig($pdo){
+            $this->queueFactory = new \Yuyat_Bulky_QueueFactory(
+                new \Yuyat_Bulky_DbAdapter_PdoMysqlAdapter($pdo),
+                self::MAXROW
+            );
+
             $this->queue = $this->queueFactory->createQueue(
                 $this->table, 
-                $column
+                $this->column
             );
 
             $this->queue->on('error', function ($records) {

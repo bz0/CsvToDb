@@ -46,6 +46,10 @@
             return $this->config->getColumnExecute()->getRowCount();
         }
 
+        private function setConfig(){
+            $this->config->getColumnExecute()->setConfig();
+        }
+
         public function execute($filePathList){
             try{
                 $this->prepareProcess();

@@ -29,8 +29,8 @@
 
         private function defaultMonolog(){
             $logName = "log";
-            $logPath = dirname(__FILE__) . "/" . date("YmdHis") . ".log";
-            $monolog = new CSVToDB\Monolog($logName, $logPath);
+            $logPath = dirname(__DIR__) . "/" . date("YmdHis") . ".log";
+            $monolog = new Monolog($logName, $logPath);
             $this->logger  = $monolog->setConfig();
         }
 
@@ -41,6 +41,7 @@
         }
 
         public function setColumnExecute(ColumnExecuteInterface $exec){
+            $exec->setConfig($this->pdo);
             $this->config->setColumnExecute($exec);
         }
 
@@ -52,6 +53,9 @@
         }
 
         public function setPostProcess(ProcessInterface $process){
+            if (method_exists($process, 'setPDO')){
+                $process->setPDO($this->pdo);
+            }
             $this->config->setPostProcess($process);
         }
 
