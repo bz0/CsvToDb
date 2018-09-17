@@ -4,13 +4,13 @@
     use Goodby\CSV\Import\Standard\LexerConfig;
     
     class Tsv implements fileInterface{
-        public static $config = [
+        public static $config = array(
             'DELIMITER'   => "\t",
             'ENCLOSURE'   => '"',
             'ESCAPE'      => "\\",
             'FROMCHARSET' => 'UTF-8',
             'TOCHARSET'   => 'SJIS-win'
-        ];
+        );
 
         const EXT         = 'tsv';
 

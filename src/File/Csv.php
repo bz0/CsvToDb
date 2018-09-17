@@ -3,13 +3,13 @@
     use Goodby\CSV\Import\Standard\LexerConfig;
 
     class Csv implements fileInterface{
-        public static $config = [
+        public static $config = array(
             'DELIMITER'   => ",",
             'ENCLOSURE'   => '"',
             'ESCAPE'      => "\\",
             'FROMCHARSET' => 'UTF-8',
             'TOCHARSET'   => 'SJIS-win'
-        ];
+        );
 
         const EXT         = 'csv';
 
