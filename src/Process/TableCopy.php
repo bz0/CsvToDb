@@ -16,14 +16,23 @@
                 $this->copy();
                 $this->insert();
                 $this->pdo->commit();
-            }catch(PDOException $e){
+            }catch(\Exception $e){
                 $this->pdo->rollback();
+                return $e->getMessage();
             }
+
+            return true;
         }
 
         private function copy(){
-            $sql = "CREATE TABLE `{$this->copyTable}` LIKE `{$this->table}`";
-            $this->pdo->query($sql);
+            try{
+                $sql = "CREATE TABLE `{$this->copyTable}` LIKE `{$this->table}`";
+                $this->pdo->query($sql);
+            }catch(\Exception $e){
+                return $e->getMessage();
+            }
+
+            return true;
         }
 
         private function insert(){
