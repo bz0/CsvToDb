@@ -4,7 +4,7 @@ require_once(dirname(__DIR__) . "/../src/File/Tsv.php");
 
 use PHPUnit\Framework\TestCase;
 
-class StackTest extends TestCase
+class TsvTest extends TestCase
 {
     public function testAccept()
     {
