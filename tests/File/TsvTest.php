@@ -12,4 +12,15 @@ class TsvTest extends TestCase
         $this->assertEquals(false, $tsv->accept("csv"));
         $this->assertEquals(true, $tsv->accept("tsv"));
     }
+
+    public function testTsvConfig(){
+        $c = new bz0\CSVToDB\File\Tsv();
+        $config = $c->config();
+
+        $this->assertEquals("\t", $config->getDelimiter());
+        $this->assertEquals("\"", $config->getEnclosure());
+        $this->assertEquals("\\", $config->getEscape());
+        $this->assertEquals("UTF-8", $config->getToCharset());
+        $this->assertEquals("SJIS-win", $config->getFromCharset());
+    }
 }
