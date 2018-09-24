@@ -42,6 +42,6 @@
                 $res = $e->getMessage();
             }
 
-            $this->assertEquals('bz0\CSVToDB\Process\TableExport:バックアップできませんでした', $res);
+            $this->assertEquals('bz0\CSVToDB\Process\TableExport:mysqldump: Couldn\'t find table: "test_notexists"', $res);
         }
     }
